@@ -78,10 +78,10 @@ export default function App() {
           <div className="hero__text">
             <p className="hero__eyebrow">Hello, I'm</p>
             <h1 className="hero__name">Rayen Ben youssef</h1>
-            <h2 className="hero__title">Data Engineer & Business Intelligence</h2>
+            <h2 className="hero__title">Data Engineer & Machine Learning Builder</h2>
             <p className="hero__tagline">
-              Étudiant en Licence Business Computing à la FSEGT · Passionné par l'IA,
-              les pipelines ETL en production et l'analyse de données médicales.
+              20-year-old Business Intelligence student at FSEGT · Driven by AI, data science,
+              and the vision of transforming healthcare through intelligent, predictive solutions.
             </p>
             <div className="hero__ctas">
               <button className="btn btn--primary" onClick={() => scrollTo("Contact")}>Me contacter</button>
@@ -103,15 +103,17 @@ export default function App() {
           <div className="about__grid">
             <div className="about__text">
               <p>
-                Étudiant en Licence Business Computing à la FSEGT, je me spécialise en
-                <strong> Data Engineering</strong>, <strong>Business Intelligence</strong> et traitement
-                de données médicales. Passionné par les pipelines ETL en production, j'ai développé
-                une architecture complète utilisant Apache Airflow, dbt, PostgreSQL, Docker et Grafana.
+                I'm leveraging the power of data to build intelligent, forward-looking solutions — with a particular dream
+                of applying this to <strong>healthcare</strong>, turning raw data into insights that improve lives.
               </p>
               <p>
-                Rigoureux, autonome et curieux, je construis des solutions data exploitant les mêmes outils
-                que 57 000+ entreprises en production. Actuellement en recherche d'opportunités pour
-                mettre mon expertise au service d'une startup innovante.
+                While I possess a broad technical toolkit, my true passion lies in <strong>Data Science, AI, and Machine Learning</strong>.
+                I don't just write code; I build the <strong>"scaffolding"</strong> necessary to deploy models that turn raw information 
+                into strategic insights — from data pipelines to production dashboards.
+              </p>
+              <p>
+                Driven by <strong>Innovate. Analyze. Predict.</strong> — I'm eager to connect with fellow researchers, data scientists, 
+                and developers passionate about the future of AI, predictive analytics, and its potential to transform healthcare.
               </p>
             </div>
             <div className="about__stats">
@@ -128,7 +130,7 @@ export default function App() {
             </div>
           </div>
           <div className="about__interests">
-            {["JCI Rafraf (2 ans)", "NEXUS FSEGT (1 an)", "Volleyball"].map(i => (
+            {["AI & Healthcare", "Predictive Analytics", "Data Pipelines"].map(i => (
               <span key={i} className="tag">{i}</span>
             ))}
           </div>
@@ -141,19 +143,64 @@ export default function App() {
         <h2 className="section__heading">Ce que je maîtrise</h2>
         <div className="skills__grid">
           <div className="skills__group">
-            <h3 className="skills__group-title">Techniques</h3>
+            <h3 className="skills__group-title">AI & Machine Learning</h3>
+            {[
+              { name: "TensorFlow & Keras", lvl: 75 },
+              { name: "Scikit-learn", lvl: 78 },
+              { name: "Model Deployment & Inference", lvl: 72 },
+            ].map(s => (
+              <div key={s.name} className="skill-bar">
+                <div className="skill-bar__label">
+                  <span>{s.name}</span>
+                  <span>{s.lvl}%</span>
+                </div>
+                <div className="skill-bar__track">
+                  <div className="skill-bar__fill" style={{ "--w": `${s.lvl}%` } as React.CSSProperties} />
+                </div>
+              </div>
+            ))}
+
+            <h3 className="skills__group-title" style={{ marginTop: "2rem" }}>Data Engineering & Orchestration</h3>
             {[
               { name: "Python 3.12 (Pandas, NumPy, Pandera)", lvl: 82 },
               { name: "Apache Airflow 3", lvl: 78 },
               { name: "dbt Core", lvl: 75 },
               { name: "SQL & PL/SQL", lvl: 80 },
-              { name: "PostgreSQL & MSSQL", lvl: 78 },
+              { name: "PostgreSQL", lvl: 78 },
+            ].map(s => (
+              <div key={s.name} className="skill-bar">
+                <div className="skill-bar__label">
+                  <span>{s.name}</span>
+                  <span>{s.lvl}%</span>
+                </div>
+                <div className="skill-bar__track">
+                  <div className="skill-bar__fill" style={{ "--w": `${s.lvl}%` } as React.CSSProperties} />
+                </div>
+              </div>
+            ))}
+
+            <h3 className="skills__group-title" style={{ marginTop: "2rem" }}>Infrastructure & Reliability</h3>
+            {[
               { name: "Docker & Docker Compose", lvl: 75 },
-              { name: "Grafana", lvl: 72 },
-              { name: "Data Warehousing & ETL", lvl: 80 },
+              { name: "Grafana & Prometheus", lvl: 72 },
+              { name: "pytest & Testing", lvl: 70 },
               { name: "Git & GitHub", lvl: 75 },
-              { name: "IBM SPSS Modeler", lvl: 70 },
-              { name: "Java, C", lvl: 65 },
+            ].map(s => (
+              <div key={s.name} className="skill-bar">
+                <div className="skill-bar__label">
+                  <span>{s.name}</span>
+                  <span>{s.lvl}%</span>
+                </div>
+                <div className="skill-bar__track">
+                  <div className="skill-bar__fill" style={{ "--w": `${s.lvl}%` } as React.CSSProperties} />
+                </div>
+              </div>
+            ))}
+
+            <h3 className="skills__group-title" style={{ marginTop: "2rem" }}>Engineering Foundation</h3>
+            {[
+              { name: "C, Java, PHP", lvl: 65 },
+              { name: "UML 2.0 Modeling", lvl: 68 },
             ].map(s => (
               <div key={s.name} className="skill-bar">
                 <div className="skill-bar__label">
@@ -169,7 +216,7 @@ export default function App() {
           <div className="skills__group">
             <h3 className="skills__group-title">Transversales</h3>
             <div className="soft-skills">
-              {["Problem Solving", "Architecture Système", "Rigueur & Sens du détail", "Autonomie & Organisation"].map(s => (
+              {["Problem Solving", "Model Architecture", "Rigueur & Sens du détail", "Autonomie & Organisation"].map(s => (
                 <div key={s} className="soft-skill">{s}</div>
               ))}
             </div>
@@ -315,8 +362,8 @@ export default function App() {
         <div className="contact__grid">
           <div className="contact__info">
             <p className="contact__intro">
-              Disponible pour des opportunités en Data Engineering & Business Intelligence.
-              N'hésitez pas à me contacter !
+              Keen to connect with researchers, data scientists, and developers passionate about 
+              AI, predictive analytics, and healthcare transformation. Let's talk!
             </p>
             {[
               { icon: "✉", label: "Email", val: "rayenbenyoussef815@gmail.com", href: "mailto:rayenbenyoussef815@gmail.com" },
@@ -339,8 +386,8 @@ export default function App() {
           </div>
           <div className="contact__card">
             <p className="contact__card-text">
-              "Data Engineer rigoureux et autonome — je construis des pipelines ETL en production
-              avec la même stack que les plus grandes tech companies."
+              "Innovate. Analyze. Predict. — Building the scaffolding to turn raw data 
+              into strategic insights, with a dream of transforming healthcare."
             </p>
             <div className="contact__card-sig">— Rayen Ben youssef</div>
           </div>

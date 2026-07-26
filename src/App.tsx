@@ -78,10 +78,10 @@ export default function App() {
           <div className="hero__text">
             <p className="hero__eyebrow">Hello, I'm</p>
             <h1 className="hero__name">Rayen Ben youssef</h1>
-            <h2 className="hero__title">Data Science & Business Intelligence</h2>
+            <h2 className="hero__title">Data Engineer & Business Intelligence</h2>
             <p className="hero__tagline">
               Étudiant en Licence Business Computing à la FSEGT · Passionné par l'IA,
-              les pipelines ETL et l'analyse de données médicales.
+              les pipelines ETL en production et l'analyse de données médicales.
             </p>
             <div className="hero__ctas">
               <button className="btn btn--primary" onClick={() => scrollTo("Contact")}>Me contacter</button>
@@ -104,18 +104,19 @@ export default function App() {
             <div className="about__text">
               <p>
                 Étudiant en Licence Business Computing à la FSEGT, je me spécialise en
-                <strong> Data Science</strong>, <strong>Business Intelligence</strong> et traitement
-                de données médicales. Passionné par l'IA et les pipelines de données, j'ai développé
-                des projets concrets incluant un entrepôt de données médicales en PL/SQL et un pipeline ETL complet.
+                <strong> Data Engineering</strong>, <strong>Business Intelligence</strong> et traitement
+                de données médicales. Passionné par les pipelines ETL en production, j'ai développé
+                une architecture complète utilisant Apache Airflow, dbt, PostgreSQL, Docker et Grafana.
               </p>
               <p>
-                Rigoureux, autonome et curieux, je cherche à mettre mes compétences au service d'une
-                startup innovante dans le domaine de Data Science & Analyse de Données Médicales.
+                Rigoureux, autonome et curieux, je construis des solutions data exploitant les mêmes outils
+                que 57 000+ entreprises en production. Actuellement en recherche d'opportunités pour
+                mettre mon expertise au service d'une startup innovante.
               </p>
             </div>
             <div className="about__stats">
               {[
-                { n: "3", label: "Projets réalisés" },
+                { n: "4", label: "Projets réalisés" },
                 { n: "4+", label: "Mois de pipeline actif" },
                 { n: "2", label: "Certifs DataCamp" },
               ].map(s => (
@@ -142,13 +143,17 @@ export default function App() {
           <div className="skills__group">
             <h3 className="skills__group-title">Techniques</h3>
             {[
-              { name: "Python (Pandas, NumPy)", lvl: 80 },
-              { name: "SQL & PL/SQL", lvl: 75 },
-              { name: "Data Warehousing & ETL", lvl: 78 },
-              { name: "Data Mining & Modélisation", lvl: 70 },
-              { name: "IBM SPSS Modeler", lvl: 65 },
-              { name: "Java, C", lvl: 60 },
-              { name: "Git & GitHub", lvl: 72 },
+              { name: "Python 3.12 (Pandas, NumPy, Pandera)", lvl: 82 },
+              { name: "Apache Airflow 3", lvl: 78 },
+              { name: "dbt Core", lvl: 75 },
+              { name: "SQL & PL/SQL", lvl: 80 },
+              { name: "PostgreSQL & MSSQL", lvl: 78 },
+              { name: "Docker & Docker Compose", lvl: 75 },
+              { name: "Grafana", lvl: 72 },
+              { name: "Data Warehousing & ETL", lvl: 80 },
+              { name: "Git & GitHub", lvl: 75 },
+              { name: "IBM SPSS Modeler", lvl: 70 },
+              { name: "Java, C", lvl: 65 },
             ].map(s => (
               <div key={s.name} className="skill-bar">
                 <div className="skill-bar__label">
@@ -164,7 +169,7 @@ export default function App() {
           <div className="skills__group">
             <h3 className="skills__group-title">Transversales</h3>
             <div className="soft-skills">
-              {["Problem Solving", "Rigueur & Sens du détail", "Autonomie & Organisation"].map(s => (
+              {["Problem Solving", "Architecture Système", "Rigueur & Sens du détail", "Autonomie & Organisation"].map(s => (
                 <div key={s} className="soft-skill">{s}</div>
               ))}
             </div>
@@ -172,8 +177,8 @@ export default function App() {
             <div className="langs">
               {[
                 { lang: "Arabe", level: "Langue maternelle", pct: 100 },
-                { lang: "Anglais", level: "Opérationnel", pct: 65 },
-                { lang: "Français", level: "Notions", pct: 40 },
+                { lang: "Anglais", level: "Opérationnel", pct: 70 },
+                { lang: "Français", level: "Notions", pct: 45 },
                 { lang: "Allemand", level: "Débutant", pct: 20 },
               ].map(l => (
                 <div key={l.lang} className="lang-item">
@@ -197,6 +202,23 @@ export default function App() {
         <h2 className="section__heading">Projets & Expériences</h2>
         <div className="timeline">
           {[
+            {
+              role: "Data Engineer — Medical Data Quality Pipeline",
+              type: "Projet Personnel - Production-Grade",
+              period: "02/2026 – Actuel",
+              duration: "4+ mois",
+              location: "Tunis",
+              bullets: [
+                "Architecture ELT complète avec Apache Airflow 3, dbt Core et PostgreSQL — 57,000+ entreprises en production utilisent cette stack",
+                "3 DAGs orchestrés (medical_etl_init, medical_etl_daily, data_quality_dag) avec scheduling, retries et dépendances",
+                "166 dbt tests (not_null, unique, relationships, expressions) + validation Pandera sur 5 marts",
+                "Docker Compose multi-service (Airflow, PostgreSQL, Grafana) avec volumes, networking et env config",
+                "Dashboards Grafana : admission rates, length of stay, vital signs tracking, medication patterns",
+                "Star Schema: 7 dimensions + 5 facts + 1 bridge table — modélisation clinique complète",
+              ],
+              tags: ["Python 3.12", "Apache Airflow", "dbt", "PostgreSQL", "Docker", "Grafana", "Pandera", "pytest"],
+              link: "https://github.com/rayenbenyoussef/Medical_data_quality_pipeline"
+            },
             {
               role: "Data Scientist — Data Quality Pipeline",
               type: "Projet Personnel",
@@ -255,6 +277,13 @@ export default function App() {
                 <div className="timeline__tags">
                   {exp.tags.map(t => <span key={t} className="tag tag--sm">{t}</span>)}
                 </div>
+                {exp.link && (
+                  <div style={{ marginTop: "1rem" }}>
+                    <a href={exp.link} className="contact__link" target="_blank" rel="noopener noreferrer">
+                      → Voir le projet →
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -299,7 +328,7 @@ export default function App() {
         <div className="contact__grid">
           <div className="contact__info">
             <p className="contact__intro">
-              Disponible pour des opportunités en Data Science & Business Intelligence.
+              Disponible pour des opportunités en Data Engineering & Business Intelligence.
               N'hésitez pas à me contacter !
             </p>
             {[
@@ -307,6 +336,7 @@ export default function App() {
               { icon: "📞", label: "Téléphone", val: "+216 52 925 815", href: "tel:+21652925815" },
               { icon: "📍", label: "Adresse", val: "Rafraf 7015, Bizerte" },
               { icon: "🔗", label: "LinkedIn", val: "linkedin.com/in/rayen-ben-youssef", href: "https://linkedin.com/in/rayen-ben-youssef-a7b727361" },
+              { icon: "🔗", label: "GitHub", val: "github.com/rayenbenyoussef", href: "https://github.com/rayenbenyoussef" },
             ].map(c => (
               <div key={c.label} className="contact__item">
                 <span className="contact__icon">{c.icon}</span>
@@ -322,8 +352,8 @@ export default function App() {
           </div>
           <div className="contact__card">
             <p className="contact__card-text">
-              "Rigoureux, autonome et curieux — je cherche à mettre mes compétences
-              au service d'une startup innovante dans le domaine de la Data Science."
+              "Data Engineer rigoureux et autonome — je construis des pipelines ETL en production
+              avec la même stack que les plus grandes tech companies."
             </p>
             <div className="contact__card-sig">— Rayen Ben youssef</div>
           </div>

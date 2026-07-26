@@ -116,7 +116,7 @@ export default function App() {
             </div>
             <div className="about__stats">
               {[
-                { n: "4", label: "Projets réalisés" },
+                { n: "3", label: "Projets réalisés" },
                 { n: "4+", label: "Mois de pipeline actif" },
                 { n: "2", label: "Certifs DataCamp" },
               ].map(s => (
@@ -218,19 +218,6 @@ export default function App() {
               ],
               tags: ["Python 3.12", "Apache Airflow", "dbt", "PostgreSQL", "Docker", "Grafana", "Pandera", "pytest"],
               link: "https://github.com/rayenbenyoussef/Medical_data_quality_pipeline"
-            },
-            {
-              role: "Data Scientist — Data Quality Pipeline",
-              type: "Projet Personnel",
-              period: "02/2026 – Actuel",
-              duration: "4 mois",
-              location: "Tunis",
-              bullets: [
-                "Pipeline ETL de traitement de données médicales en Python (Pandas, NumPy)",
-                "Nettoyage, validation et profiling de datasets hospitaliers réels (MIMIC-IV)",
-                "Intégration d'IBM SPSS Modeler pour l'automatisation des transformations",
-              ],
-              tags: ["Python", "ETL", "MIMIC-IV", "SPSS"],
             },
             {
               role: "Data Warehouse Engineer",

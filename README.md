@@ -1,0 +1,42 @@
+# Rayen Ben youssef — Portfolio
+
+A dark, editorial React + Vite portfolio site built from your CV.
+
+## Setup
+
+1. **Copy files** into your existing `my-portfolio/src/` folder:
+   - `App.tsx` → replaces your existing `App.tsx`
+   - `App.css` → replaces your existing `App.css`
+   - `main.tsx` → replaces your existing `main.tsx`
+   - `index.css` → replaces your existing `index.css`
+
+2. **Add your photo**:
+   - Place your photo as `photo.jpg` (or any format) inside the `public/` folder
+   - In `App.tsx`, find `src="/photo.jpg"` and update the filename if needed
+   - If no photo is provided, your initials **RB** will show as a placeholder
+
+3. **Install & run**:
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+## Structure
+
+- **Hero** — Your name, title, photo, and CTAs
+- **About** — Profile summary + stats + interests
+- **Skills** — Animated skill bars + languages
+- **Experience** — Timeline of your 3 projects
+- **Education** — FSEGT degree + 4 certifications
+- **Contact** — All your contact info
+
+## Customization
+
+All content is in `App.tsx`. To update anything (skills, projects, etc.), edit the data arrays directly in the file — they're clearly commented.
+
+## Tech
+
+- React 18 + TypeScript
+- Vite
+- CSS custom properties (no Tailwind needed)
+- Google Fonts: Syne + DM Sans

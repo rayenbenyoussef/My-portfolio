@@ -1,78 +1,13 @@
 import { useState, useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import "./App.css";
+import { CONTENT, PROJECTS_BASE, SKILL_ITEMS, LANG_PCT, CONTACT_VALUES, type Lang } from "./content";
 
-/* ===== CONTENT (from the CV) ===== */
-const NAV_LINKS = ["About", "Skills", "Projects", "Education", "Contact"];
-
-const PROJECTS = [
-  {
-    role: "Medical Data Quality Pipeline",
-    type: "Personal project · Data Engineering & Data Science",
-    period: "05/2026 – 07/2026",
-    duration: "2 months",
-    location: "Tunis",
-    bullets: [
-      "Built an end-to-end ELT pipeline on real-world healthcare data (MIMIC-IV-ED) using Python, Airflow, dbt, PostgreSQL and Docker, with 166 automated data quality tests.",
-      "Created Grafana monitoring dashboards and a Logistic Regression prototype for emergency admission prediction.",
-    ],
-    tags: ["Python", "Airflow", "dbt", "PostgreSQL", "Docker", "Grafana", "Scikit-learn"],
-    link: "https://github.com/rayenbenyoussef/Medical_data_quality_pipeline",
-    images: ["/projects/medical-1.png", "/projects/medical-2.png", "/projects/medical-3.png"],
-  },
-  {
-    role: "Clubiqo",
-    type: "Personal project · Android & PHP club management app",
-    period: "2026",
-    duration: "2 months",
-    location: "Tunis",
-    bullets: [
-      "Designed and built an Android prototype (Java/XML) with member, moderator and admin roles, event registration and dashboards, based on UML 2.0 diagrams.",
-      "Developed the PHP web admin interface.",
-    ],
-    tags: ["Java", "XML", "PHP", "UML 2.0", "Android"],
-    link: "https://github.com/rayenbenyoussef/Clubiqo_app",
-    images: ["/projects/clubiqo-1.png", "/projects/clubiqo-2.png", "/projects/clubiqo-3.png"],
-  },
-  {
-    role: "GymFlow",
-    type: "Team project · FSEGT · Scrum Master & Java Developer",
-    period: "04/2026",
-    duration: "2 weeks",
-    location: "Tunis",
-    bullets: ["Led an Agile team as Scrum Master (task tracking, sprint coordination) while developing Java features."],
-    tags: ["Java", "Agile / Scrum", "Git & GitHub"],
-    link: "https://github.com/rayenbenyoussef/GymFlow_Agl_ds_main",
-    images: ["/projects/gymflow-1.png", "/projects/gymflow-2.png", "/projects/gymflow-3.png"],
-  },
-];
-
-const SKILL_GROUPS = [
-  { title: "Data & Machine Learning", items: ["Python (Pandas, NumPy, Scikit-learn)", "SQL (PostgreSQL, PL/SQL)", "Machine Learning", "Data Analysis & Data Modeling"] },
-  { title: "Pipelines & Warehousing", items: ["ETL/ELT & Data Warehousing", "Airflow", "dbt", "Docker"] },
-  { title: "Visualization & Tooling", items: ["Power BI", "Grafana", "Git & GitHub"] },
-  { title: "Software Engineering", items: ["Java, C, PHP", "Android (Java/XML)", "UML", "Agile / Scrum"] },
-];
-
-const SOFT_SKILLS = ["Problem Solving", "Attention to Detail", "Autonomy & Organization", "Analytical Thinking", "Teamwork"];
-const LANGS = [
-  { lang: "Arabic", level: "Native", pct: 100 },
-  { lang: "French", level: "Intermediate", pct: 70 },
-  { lang: "English", level: "Intermediate", pct: 65 },
-  { lang: "German", level: "Beginner", pct: 20 },
-];
-const CERTS = [
-  { org: "DataCamp", name: "Intermediate Python", date: "Jan 2026" },
-  { org: "DataCamp", name: "Data Manipulation with pandas", date: "Feb 2026" },
-  { org: "JCI Rafraf", name: "Best Content Creator of the Year 2025", date: "2025" },
-];
-const INTERESTS = ["Healthcare & Data", "Business & Finance", "JCI Rafraf (2 years)", "NEXUS FSEGT (1 year)", "Volleyball"];
-const CONTACTS = [
-  { icon: "✉", label: "Email", val: "rayen.benyoussef@etudiant-fsegt.utm.tn", href: "mailto:rayen.benyoussef@etudiant-fsegt.utm.tn" },
-  { icon: "📞", label: "Phone", val: "+216 52 925 815", href: "tel:+21652925815" },
-  { icon: "📍", label: "Location", val: "Tunis, Tunisia" },
-  { icon: "🔗", label: "LinkedIn", val: "linkedin.com/in/rayen-ben-youssef", href: "https://linkedin.com/in/rayen-ben-youssef-a7b727361" },
-  { icon: "🔗", label: "GitHub", val: "github.com/rayenbenyoussef", href: "https://github.com/rayenbenyoussef" },
-];
+const IDS = ["about", "skills", "projects", "education", "contact"];
+const rich = (s: string) => s.split("**").map((x, i) => (i % 2 ? <strong key={i}>{x}</strong> : x));
+const initialLang = (): Lang => {
+  try { const v = localStorage.getItem("lang"); if (v === "en" || v === "fr") return v; } catch { /* ignore */ }
+  return navigator.language.toLowerCase().startsWith("fr") ? "fr" : "en";
+};
 
 /* ===== HELPERS ===== */
 function useInView(threshold = 0.15) {
@@ -95,14 +30,14 @@ function Section({ id, children, className = "" }: { id: string; children: React
   );
 }
 
-function Slot({ src, label, big = false }: { src: string; label: string; big?: boolean }) {
+function Slot({ src, label, hint, big = false }: { src: string; label: string; hint: string; big?: boolean }) {
   const [ok, setOk] = useState(true);
   return (
     <div className={`slot ${big ? "slot--big" : ""}`}>
       {ok ? (
         <img src={src} alt={label} loading="lazy" onError={() => setOk(false)} />
       ) : (
-        <div className="slot__empty"><span>Add a screenshot</span><code>public{src}</code></div>
+        <div className="slot__empty"><span>{hint}</span><code>public{src}</code></div>
       )}
     </div>
   );
@@ -112,8 +47,16 @@ const Bar = ({ pct }: { pct: number }) => ({ "--w": `${pct}%` } as CSSProperties
 
 /* ===== APP ===== */
 export default function App() {
+  const [lang, setLang] = useState<Lang>(initialLang);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const t = CONTENT[lang];
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    document.title = `Rayen Ben Youssef | ${t.title}`;
+    try { localStorage.setItem("lang", lang); } catch { /* ignore */ }
+  }, [lang, t.title]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -122,24 +65,34 @@ export default function App() {
   }, []);
 
   const scrollTo = (id: string) => {
-    document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setMenuOpen(false);
   };
+  const contacts = [
+    { icon: "✉", val: CONTACT_VALUES.email, href: `mailto:${CONTACT_VALUES.email}` },
+    { icon: "📞", val: CONTACT_VALUES.phone, href: "tel:+21652925815" },
+    { icon: "📍", val: t.contact.place },
+    { icon: "🔗", val: "linkedin.com/in/rayen-ben-youssef", href: CONTACT_VALUES.linkedin },
+    { icon: "🔗", val: "github.com/rayenbenyoussef", href: CONTACT_VALUES.github },
+  ];
 
   return (
     <div className="app">
       <nav className={`nav ${scrolled ? "nav--scrolled" : ""}`}>
         <div className="nav__logo" onClick={() => scrollTo("hero")}>RB</div>
         <ul className={`nav__links ${menuOpen ? "nav__links--open" : ""}`}>
-          {NAV_LINKS.map((l) => (<li key={l}><button onClick={() => scrollTo(l)}>{l}</button></li>))}
+          {IDS.map((id, i) => (<li key={id}><button onClick={() => scrollTo(id)}>{t.nav[i]}</button></li>))}
         </ul>
+        <div className="nav__lang" role="group" aria-label="Language">
+          {(["en", "fr"] as Lang[]).map((l) => (
+            <button key={l} aria-pressed={lang === l} onClick={() => setLang(l)}>{l.toUpperCase()}</button>
+          ))}
+        </div>
         <button className="nav__burger" onClick={() => setMenuOpen((o) => !o)} aria-label="Menu"><span /><span /><span /></button>
       </nav>
 
       <section id="hero" className="hero">
-        <div className="hero__bg">
-          <div className="hero__orb hero__orb--1" /><div className="hero__orb hero__orb--2" /><div className="hero__grid" />
-        </div>
+        <div className="hero__bg"><div className="hero__orb hero__orb--1" /><div className="hero__orb hero__orb--2" /><div className="hero__grid" /></div>
         <div className="hero__content">
           <div className="hero__photo-wrapper">
             <div className="hero__photo-ring" />
@@ -152,69 +105,56 @@ export default function App() {
             </div>
           </div>
           <div className="hero__text">
-            <p className="hero__eyebrow">Hello, I'm</p>
+            <p className="hero__eyebrow">{t.hello}</p>
             <h1 className="hero__name">Rayen Ben Youssef</h1>
-            <h2 className="hero__title">Data Science & Business Intelligence Student</h2>
-            <p className="hero__tagline">
-              I build data pipelines and predictive models, from raw data to dashboards.
-              Looking for a graduation internship (PFE) from February 1 to May 30, 2027.
-            </p>
+            <h2 className="hero__title">{t.title}</h2>
+            <p className="hero__tagline">{t.tagline}</p>
             <div className="hero__ctas">
-              <button className="btn btn--primary" onClick={() => scrollTo("Contact")}>Contact me</button>
-              <button className="btn btn--ghost" onClick={() => scrollTo("Projects")}>See my projects</button>
+              <button className="btn btn--primary" onClick={() => scrollTo("contact")}>{t.ctaContact}</button>
+              <button className="btn btn--ghost" onClick={() => scrollTo("projects")}>{t.ctaProjects}</button>
             </div>
           </div>
         </div>
-        <div className="hero__scroll-hint"><span>Scroll</span><div className="hero__scroll-line" /></div>
+        <div className="hero__scroll-hint"><span>{t.scroll}</span><div className="hero__scroll-line" /></div>
       </section>
 
       <Section id="about">
         <div className="about__inner">
-          <div className="section__label">01 — Profile</div>
-          <h2 className="section__heading">About me</h2>
+          <div className="section__label">{t.about.label}</div>
+          <h2 className="section__heading">{t.about.heading}</h2>
           <div className="about__grid">
-            <div className="about__text">
-              <p>
-                Business Computing student at FSEGT, specialized in <strong>Data Science, Business Intelligence</strong> and data analytics.
-                I build data pipelines and predictive models, from raw data to dashboards.
-              </p>
-              <p>
-                I have hands-on experience in <strong>ELT/ETL, data quality, data warehousing and Machine Learning</strong> (Python, SQL, Airflow, dbt, Power BI).
-                I'm interested in applying data to <strong>healthcare, business and finance</strong>.
-              </p>
-              <p>Detail-oriented, autonomous and analytical.</p>
-            </div>
+            <div className="about__text">{t.about.paras.map((p) => <p key={p}>{rich(p)}</p>)}</div>
             <div className="about__stats">
-              {[{ n: "3", label: "Projects built" }, { n: "166", label: "Automated data quality tests" }, { n: "2", label: "DataCamp certificates" }].map((s) => (
-                <div key={s.label} className="about__stat"><span className="about__stat-n">{s.n}</span><span className="about__stat-l">{s.label}</span></div>
+              {["3", "166", "2"].map((n, i) => (
+                <div key={n} className="about__stat"><span className="about__stat-n">{n}</span><span className="about__stat-l">{t.about.stats[i]}</span></div>
               ))}
             </div>
           </div>
-          <div className="about__interests">{INTERESTS.map((i) => (<span key={i} className="tag">{i}</span>))}</div>
+          <div className="about__interests">{t.about.interests.map((i) => (<span key={i} className="tag">{i}</span>))}</div>
         </div>
       </Section>
 
       <Section id="skills" className="section--alt">
-        <div className="section__label">02 — Skills</div>
-        <h2 className="section__heading">What I work with</h2>
+        <div className="section__label">{t.skills.label}</div>
+        <h2 className="section__heading">{t.skills.heading}</h2>
         <div className="skills__grid">
           <div className="skills__group">
-            {SKILL_GROUPS.map((g) => (
-              <div key={g.title}>
-                <h3 className="skills__group-title">{g.title}</h3>
-                <div className="skills__tags">{g.items.map((i) => (<span key={i} className="tag">{i}</span>))}</div>
+            {t.skills.groups.map((g, gi) => (
+              <div key={g}>
+                <h3 className="skills__group-title">{g}</h3>
+                <div className="skills__tags">{SKILL_ITEMS[gi].map((i) => (<span key={i} className="tag">{i}</span>))}</div>
               </div>
             ))}
           </div>
           <div className="skills__group">
-            <h3 className="skills__group-title">Soft skills</h3>
-            <div className="soft-skills">{SOFT_SKILLS.map((s) => (<div key={s} className="soft-skill">{s}</div>))}</div>
-            <h3 className="skills__group-title" style={{ marginTop: "2rem" }}>Languages</h3>
+            <h3 className="skills__group-title">{t.skills.softTitle}</h3>
+            <div className="soft-skills">{t.skills.soft.map((s) => (<div key={s} className="soft-skill">{s}</div>))}</div>
+            <h3 className="skills__group-title" style={{ marginTop: "2rem" }}>{t.skills.langsTitle}</h3>
             <div className="langs">
-              {LANGS.map((l) => (
-                <div key={l.lang} className="lang-item">
-                  <div className="lang-item__header"><span className="lang-item__name">{l.lang}</span><span className="lang-item__level">{l.level}</span></div>
-                  <div className="lang-item__bar"><div className="lang-item__fill" style={Bar({ pct: l.pct })} /></div>
+              {t.skills.langs.map(([name, level], i) => (
+                <div key={name} className="lang-item">
+                  <div className="lang-item__header"><span className="lang-item__name">{name}</span><span className="lang-item__level">{level}</span></div>
+                  <div className="lang-item__bar"><div className="lang-item__fill" style={Bar({ pct: LANG_PCT[i] })} /></div>
                 </div>
               ))}
             </div>
@@ -223,76 +163,79 @@ export default function App() {
       </Section>
 
       <Section id="projects">
-        <div className="section__label">03 — Projects</div>
-        <h2 className="section__heading">Things I've built</h2>
+        <div className="section__label">{t.projects.label}</div>
+        <h2 className="section__heading">{t.projects.heading}</h2>
         <div className="timeline">
-          {PROJECTS.map((p) => (
-            <div key={p.role} className="timeline__item">
-              <div className="timeline__marker"><div className="timeline__dot" /><div className="timeline__line" /></div>
-              <div className="timeline__card">
-                <div className="timeline__header">
-                  <div>
-                    <p className="timeline__type">{p.type}</p>
-                    <h3 className="timeline__role">{p.role}</h3>
-                    <p className="timeline__meta">{p.location} · {p.period}</p>
+          {t.projects.items.map((p, i) => {
+            const b = PROJECTS_BASE[i];
+            return (
+              <div key={p.name} className="timeline__item">
+                <div className="timeline__marker"><div className="timeline__dot" /><div className="timeline__line" /></div>
+                <div className="timeline__card">
+                  <div className="timeline__header">
+                    <div>
+                      <p className="timeline__type">{p.type}</p>
+                      <h3 className="timeline__role">{p.name}</h3>
+                      <p className="timeline__meta">{p.location} · {b.period}</p>
+                    </div>
+                    <span className="timeline__duration">{p.duration}</span>
                   </div>
-                  <span className="timeline__duration">{p.duration}</span>
-                </div>
-                <div className="proj-gallery">
-                  <Slot big src={p.images[0]} label={`${p.role} main screenshot`} />
-                  <Slot src={p.images[1]} label={`${p.role} screenshot 2`} />
-                  <Slot src={p.images[2]} label={`${p.role} screenshot 3`} />
-                </div>
-                <ul className="timeline__bullets">{p.bullets.map((b) => <li key={b}>{b}</li>)}</ul>
-                <div className="timeline__tags">{p.tags.map((t) => <span key={t} className="tag tag--sm">{t}</span>)}</div>
-                <div style={{ marginTop: "1rem" }}>
-                  <a href={p.link} className="contact__link" target="_blank" rel="noopener noreferrer">View on GitHub →</a>
+                  <div className="proj-gallery">
+                    <Slot big src={b.images[0]} hint={t.projects.addShot} label={`${p.name} 1`} />
+                    <Slot src={b.images[1]} hint={t.projects.addShot} label={`${p.name} 2`} />
+                    <Slot src={b.images[2]} hint={t.projects.addShot} label={`${p.name} 3`} />
+                  </div>
+                  <ul className="timeline__bullets">{p.bullets.map((x) => <li key={x}>{x}</li>)}</ul>
+                  <div className="timeline__tags">{b.tags.map((x) => <span key={x} className="tag tag--sm">{x}</span>)}</div>
+                  <div style={{ marginTop: "1rem" }}>
+                    <a href={b.link} className="contact__link" target="_blank" rel="noopener noreferrer">{t.projects.github}</a>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </Section>
 
       <Section id="education" className="section--alt">
-        <div className="section__label">04 — Education</div>
-        <h2 className="section__heading">Academic path</h2>
+        <div className="section__label">{t.education.label}</div>
+        <h2 className="section__heading">{t.education.heading}</h2>
         <div className="edu__grid">
           <div className="edu__card edu__card--main">
             <div className="edu__icon">🎓</div>
             <div>
-              <p className="edu__school">Faculty of Economics and Management of Tunis (FSEGT)</p>
-              <h3 className="edu__degree">Bachelor's Degree in Business Computing</h3>
-              <p className="edu__period">09/2024 – Present · Tunis</p>
+              <p className="edu__school">{t.education.school}</p>
+              <h3 className="edu__degree">{t.education.degree}</h3>
+              <p className="edu__period">{t.education.period}</p>
             </div>
           </div>
           <div className="edu__certs">
-            <h3 className="edu__certs-title">Certifications & achievements</h3>
-            {CERTS.map((c) => (
-              <div key={c.name} className="cert"><span className="cert__org">{c.org}</span><span className="cert__name">{c.name}</span><span className="cert__date">{c.date}</span></div>
+            <h3 className="edu__certs-title">{t.education.certsTitle}</h3>
+            {t.education.certs.map(([org, name, date]) => (
+              <div key={name} className="cert"><span className="cert__org">{org}</span><span className="cert__name">{name}</span><span className="cert__date">{date}</span></div>
             ))}
           </div>
         </div>
       </Section>
 
       <Section id="contact">
-        <div className="section__label">05 — Contact</div>
-        <h2 className="section__heading">Let's work together</h2>
+        <div className="section__label">{t.contact.label}</div>
+        <h2 className="section__heading">{t.contact.heading}</h2>
         <div className="contact__grid">
           <div className="contact__info">
-            <p className="contact__intro">I'm looking for a graduation internship (PFE) from February 1 to May 30, 2027. Get in touch if you have a data project in healthcare, business or finance.</p>
-            {CONTACTS.map((c) => (
-              <div key={c.label} className="contact__item">
+            <p className="contact__intro">{t.contact.intro}</p>
+            {contacts.map((c, i) => (
+              <div key={i} className="contact__item">
                 <span className="contact__icon">{c.icon}</span>
                 <div>
-                  <p className="contact__item-label">{c.label}</p>
+                  <p className="contact__item-label">{t.contact.labels[i]}</p>
                   {c.href ? <a href={c.href} className="contact__item-val contact__link">{c.val}</a> : <p className="contact__item-val">{c.val}</p>}
                 </div>
               </div>
             ))}
           </div>
           <div className="contact__card">
-            <p className="contact__card-text">"Innovate. Analyze. Predict. — Building the scaffolding to turn raw data into strategic insights."</p>
+            <p className="contact__card-text">{t.contact.quote}</p>
             <div className="contact__card-sig">— Rayen Ben Youssef</div>
           </div>
         </div>

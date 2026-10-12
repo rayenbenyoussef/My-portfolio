@@ -490,3 +490,9 @@ img { max-width: 100%; display: block; }
 .slot__empty code { font-size: 0.7rem; color: var(--c-text-dim); word-break: break-all; }
 .skills__tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .skills__tags + .skills__group-title { margin-top: 2rem; }
+
+/* ---- LANGUAGE SWITCH ---- */
+.nav__lang { display: flex; gap: 0.25rem; margin-left: 1.25rem; }
+.nav__lang button { padding: 0.15rem 0.6rem; border: 1px solid var(--c-border); border-radius: 0.4rem; font-size: 0.78rem; font-weight: 700; color: var(--c-text-muted); }
+.nav__lang button[aria-pressed="true"] { background: var(--c-accent); color: var(--c-bg); border-color: var(--c-accent); }
+@media (max-width: 768px) { .nav__lang { margin-left: auto; margin-right: 0.75rem; } }

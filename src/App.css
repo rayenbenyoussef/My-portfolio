@@ -488,3 +488,7 @@ img { max-width: 100%; display: block; }
 .nav__lang button { padding: 0.15rem 0.6rem; border: 1px solid var(--c-border); border-radius: 0.4rem; font-size: 0.78rem; font-weight: 700; color: var(--c-text-muted); }
 .nav__lang button[aria-pressed="true"] { background: var(--c-accent); color: var(--c-bg); border-color: var(--c-accent); }
 @media (max-width: 768px) { .nav__lang { margin-left: auto; margin-right: 0.75rem; } }
+
+/* Mixed gallery: 1 horizontal + 2 vertical (phone) screenshots, equal height */
+.proj-gallery--mixed { grid-template-columns: 1.6fr 0.5625fr 0.5625fr; aspect-ratio: 2.8 / 1; }
+.proj-gallery--mixed .slot { aspect-ratio: auto; height: 100%; }

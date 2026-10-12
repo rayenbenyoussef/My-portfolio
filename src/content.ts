@@ -5,7 +5,7 @@ export const PROJECTS_BASE = [
   { period: "05/2026 – 07/2026", tags: ["Python", "Airflow", "dbt", "PostgreSQL", "Docker", "Grafana", "Scikit-learn"],
     link: "https://github.com/rayenbenyoussef/Medical_data_quality_pipeline",
     images: ["/projects/medical-1.png", "/projects/medical-2.png", "/projects/medical-3.png"] },
-  { period: "2026", tags: ["Java", "XML", "PHP", "UML 2.0", "Android"],
+  { mixed: true, period: "2026", tags: ["Java", "XML", "PHP", "UML 2.0", "Android"],
     link: "https://github.com/rayenbenyoussef/Clubiqo_app",
     images: ["/projects/clubiqo-1.png", "/projects/clubiqo-2.png", "/projects/clubiqo-3.png"] },
   { period: "04/2026", tags: ["Java", "Agile / Scrum", "Git & GitHub"],

@@ -176,8 +176,8 @@ export default function App() {
                     </div>
                     <span className="timeline__duration">{p.duration}</span>
                   </div>
-                  <div className="proj-gallery">
-                    <Slot big src={b.images[0]} hint={t.projects.addShot} label={`${p.name} 1`} />
+                  <div className={`proj-gallery ${b.mixed ? "proj-gallery--mixed" : ""}`}>
+                    <Slot big={!b.mixed} src={b.images[0]} hint={t.projects.addShot} label={`${p.name} 1`} />
                     <Slot src={b.images[1]} hint={t.projects.addShot} label={`${p.name} 2`} />
                     <Slot src={b.images[2]} hint={t.projects.addShot} label={`${p.name} 3`} />
                   </div>

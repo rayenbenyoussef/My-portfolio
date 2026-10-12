@@ -79,7 +79,7 @@ export default function App() {
   return (
     <div className="app">
       <nav className={`nav ${scrolled ? "nav--scrolled" : ""}`}>
-        <div className="nav__logo" onClick={() => scrollTo("hero")}>RB</div>
+        <div className="nav__logo" onClick={() => scrollTo("hero")}>Rayen Ben Youssef</div>
         <ul className={`nav__links ${menuOpen ? "nav__links--open" : ""}`}>
           {IDS.map((id, i) => (<li key={id}><button onClick={() => scrollTo(id)}>{t.nav[i]}</button></li>))}
         </ul>
@@ -97,11 +97,7 @@ export default function App() {
           <div className="hero__photo-wrapper">
             <div className="hero__photo-ring" />
             <div className="hero__photo">
-              <img src="/photo.jpg" alt="Rayen Ben Youssef" onError={(e) => {
-                (e.target as HTMLImageElement).style.display = "none";
-                (e.target as HTMLImageElement).parentElement!.classList.add("hero__photo--placeholder");
-              }} />
-              <div className="hero__photo-initials">RB</div>
+              <img src="/photo.jpg" alt="Rayen Ben Youssef" />
             </div>
           </div>
           <div className="hero__text">
